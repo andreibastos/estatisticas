@@ -53,7 +53,7 @@ def default(self):
 @route('/estatisticas/<id>')
 @enable_cors
 def parsed(id):
-    print id 
+    print(id) 
     estatistica = {"resposta":False}
 
     for document in estatisticas_collection.find({"_id":id}):
