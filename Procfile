@@ -1,1 +1,1 @@
-web: pythono api_estatisticas.py
+web: python api_estatisticas.py
