@@ -132,3 +132,15 @@ include/python2\.7
 local/
 
 pip-selfcheck\.json
+
+bin/easy_install-3\.5
+
+bin/pip3
+
+bin/pip3\.5
+
+bin/python3
+
+bin/python3\.5
+
+include/python3\.5m

@@ -25,7 +25,7 @@ except Exception as e:
    print(e)
 
 
-
+bottle.debug(True)
 
 
 # the decorator
@@ -42,11 +42,6 @@ def enable_cors(fn):
  
     return _enable_cors
 
-# Route for parsing the requests with the given filter
-@route('/')
-@enable_cors
-def default(self):
-    return 'estatísticas/r12h'
 
 
 # Route for parsing the requests with the given filter
@@ -65,17 +60,17 @@ def parsed(id):
 
     return json.dumps(estatistica, sort_keys=True, ensure_ascii=False)
 
-    
+# Route for parsing the requests with the given filter
+@route('/')
+@enable_cors
+def default():
+    return 'estatísticas/r12h'
+
      
 
 # =======================================================================
 if __name__ == "__main__":
-    try:
-        port = sys.argv[1]
-        print('port: ' + str(port))
-    except Exception:
-        port = 8091
-        print('Default port: ' + str(port))
-    # starts server
-    # multithread CherryPy
-    run(host='0.0.0.0', port=port)
+    if os.environ.get('APP_LOCATION') == 'heroku':
+        run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    else:
+        run(host='localhost', port=8080, debug=True)
