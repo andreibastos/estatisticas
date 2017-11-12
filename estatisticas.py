@@ -156,10 +156,9 @@ def configura_tempo(label_db):
 	now = datetime.datetime.utcnow()	
 	interval = now - datetime.timedelta(seconds=now.second, minutes=now.minute)
 	unix_time= int((interval - datetime.datetime(1970,1,1)).total_seconds())
-	
-	print (unix_time)
 
 	date_final = unix_time*1000;
+
 	period = 1*60*60*1000
 
 	if 'r' in label_db:
