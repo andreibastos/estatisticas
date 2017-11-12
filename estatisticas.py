@@ -105,7 +105,7 @@ onde
 %S - segundos 59
 """
 def convert_time(timestamp):
-	return datetime.datetime.fromtimestamp(timestamp).strftime(data_format)
+	return datetime.datetime.fromtimestamp(timestamp - 2*60*60).strftime(data_format)
 
 """
 sum_series_common(serie_1, serie_2)
