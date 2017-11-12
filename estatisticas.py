@@ -60,7 +60,7 @@ def find_count(query,field_comparator, field_time,collection_name, period,timest
 
 		#converte a data para formato desejado
 		date = convert_time(int(timestamp_ms_final/1000))
-		print date, count
+		print(date, count)
 
 		
 		#adiciona no dicionario
@@ -147,7 +147,7 @@ def ler_configuracao():
 			return label_db
 			pass
 	except Exception as e:
-		print e
+		print( e)
 		exit(0)
 
 def configura_tempo(label_db):
@@ -157,7 +157,7 @@ def configura_tempo(label_db):
 	interval = now - datetime.timedelta(seconds=now.second, minutes=now.minute)
 	unix_time= int((interval - datetime.datetime(1970,1,1)).total_seconds())
 	
-	print unix_time
+	print (unix_time)
 
 	date_final = unix_time*1000;
 	period = 1*60*60*1000
@@ -187,14 +187,13 @@ def configura_tempo(label_db):
 	if label_db == 'r8h':
 		hora = 8;
 		if now.hour>hora:
-			print now
 			interval = now - datetime.timedelta(seconds=now.second, minutes=now.minute, hours=now.hour-hora)
-			print interval
+
 		else:
 			interval = now - datetime.timedelta(seconds=now.second, minutes=now.minute)
 
 		unix_time= int(interval.strftime("%s"))
-		print unix_time
+		
 		date_final = unix_time*1000
 
 		date_inicial = date_final - 13*60*60*1000
@@ -259,7 +258,7 @@ def configura_tempo(label_db):
 	data_output["date_final"] = date_final/1000
 	data_output["period_seconds"] = period/1000
 
-	print convert_time(date_inicial/1000), convert_time(date_final/1000), period
+	print(convert_time(date_inicial/1000), convert_time(date_final/1000), period)
 
 
 def append_serie(series,label,field_comparator,field_time,collection_name,query):
@@ -269,7 +268,7 @@ def append_serie(series,label,field_comparator,field_time,collection_name,query)
 	serie["label"] = label
 	serie["data"] = data
 	series.append(serie)
-	print "\t"+label
+	print("\t"+label)
 
 ########################################Twitter########################################
 def twitter_estatisticas():	
@@ -293,7 +292,7 @@ def twitter_estatisticas():
 
 ########################################facebook########################################
 def facebook_estatisticas():
-	print ("facebook")
+	print("facebook")
 	global data_output,config_data
 	series_facebook = []	
 

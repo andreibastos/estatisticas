@@ -83,7 +83,7 @@ def default():
 
 
 def get_estatisticas(id):
-    print id
+
     estatistica_output = {"resposta":False}   
     for document in estatisticas_collection.find({"_id":id }):
         if document:
