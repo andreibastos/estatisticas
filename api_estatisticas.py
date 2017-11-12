@@ -5,13 +5,14 @@ from sys import argv
 import bottle
 from bottle import route, run, response
 import json
-
+import estatisticas
 import os
 
-MONGO_URI = os.environ.get('MONGO_URI', None)
-DATABASE_NAME = os.environ.get('DATABASE_NAME', None)
-COLLECTION_NAME =  os.environ.get('COLLECTION_NAME', None)
+MONGO_URI = os.environ.get('MONGO_URI', 'mongodb://localhost')
+DATABASE_NAME = os.environ.get('DATABASE_NAME', "twixplorer")
+COLLECTION_NAME =  os.environ.get('COLLECTION_NAME', "estatisticas")
 print(MONGO_URI,DATABASE_NAME, COLLECTION_NAME)
+
 
 
 estatisticas_collection = None
@@ -48,24 +49,48 @@ def enable_cors(fn):
 @route('/estatisticas/<id>')
 @enable_cors
 def parsed(id):
-    print(id) 
-    estatistica = {"resposta":False}
+    estatistica_output = get_estatisticas(id)
+    if(estatistica_output["resposta"]):
+        data = estatistica_output.get("data")
+        date = None
+        if data:
+            date = data["date"]
 
-    for document in estatisticas_collection.find({"_id":id}):
-        if document:
-            estatistica = {"resposta":True}
-            estatistica["data"] = document
-            estatistica["resposta"] = True
+        if date:
+            now = datetime.datetime.utcnow()
+            interval = now - datetime.timedelta(seconds=now.second, minutes=now.minute)
+            unix_time= int((interval - datetime.datetime(1970,1,1)).total_seconds())
+
+            if (unix_time - date) > 0:
+                estatisticas.main(id)
+                estatistica_output = get_estatisticas(id)
 
 
-    return json.dumps(estatistica, sort_keys=True, ensure_ascii=False)
+
+        return json.dumps(estatistica_output, sort_keys=True, ensure_ascii=False)
+
+    else:        
+        estatisticas.main(id)
+        estatistica_output = get_estatisticas(id)
+
+    return json.dumps(estatistica_output, sort_keys=True, ensure_ascii=False)
 
 # Route for parsing the requests with the given filter
 @route('/')
 @enable_cors
 def default():
-    return 'estatísticas/r12h'
+    return 'estatisticas/r12h'
 
+
+def get_estatisticas(id):
+    print id
+    estatistica_output = {"resposta":False}   
+    for document in estatisticas_collection.find({"_id":id }):
+        if document:
+            estatistica_output["data"] = document
+            estatistica_output["resposta"] = True
+
+    return estatistica_output
      
 
 # =======================================================================
@@ -73,4 +98,4 @@ if __name__ == "__main__":
     if os.environ.get('APP_LOCATION') == 'heroku':
         run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
     else:
-        run(host='localhost', port=8080, debug=True)
+        run(host='localhost', port=8080, debug=True, reloader=True)

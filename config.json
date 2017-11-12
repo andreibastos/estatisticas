@@ -1,0 +1,59 @@
+{
+	"config_twitter": {
+		"collection_name" : "tweets",
+		"field_time" : "status.timestamp_ms",
+
+		"series":[
+			{		
+				"label" : "Tweets",
+				"field_comparator" : "status.id_str",
+				"query" : {}
+			},
+			{		
+				"label" : "Educacional",
+				"field_comparator" : "status.id_str",
+				"query" : {"categories":"educacional"}
+			},
+			{		
+				"label" : "Mídia",
+                "field_comparator" : "status.id_str",
+                "query" : {"categories":"mídia"}
+			},
+            {       
+                "label" : "Inep",
+                "field_comparator" : "status.id_str",
+                "query" : {"categories":"inep"}
+            }
+		]
+	},
+
+	"config_facebook":{
+		"collection_name" : "face_pages",
+		"field_time" : "created_time_ms",	
+		"series":[
+			{
+				"label":"Posts",
+				"field_comparator" : "post_id",
+				"query" : {}
+			},
+            {       
+                "label" : "Inep",
+                "field_comparator" : "post_id",
+                "query" : {"categories":"inep"}
+            },
+            {       
+                "label" : "Educacional",
+                "field_comparator" : "post_id",
+                "query" : {"categories":"educacional"}
+            },
+            {       
+                "label" : "Mídia",
+                "field_comparator" : "post_id",
+                "query" : {"categories":"mídia"}
+            }
+		]
+
+		
+	}
+
+}
